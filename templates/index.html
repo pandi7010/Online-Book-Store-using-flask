@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📘 Online Book Store</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary-color: #4e73df;
+      --secondary-color: #f8f9fc;
+      --accent-color: #2e59d9;
+      --text-color: #5a5c69;
+    }
+    
+    body {
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .navbar-brand {
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+    
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+      color: white;
+      padding: 3rem 0;
+      margin-bottom: 2rem;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .book-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      border: none;
+    }
+    
+    .book-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .book-card .card-body {
+      padding: 1.5rem;
+    }
+    
+    .book-card .card-title {
+      font-weight: 600;
+      color: var(--accent-color);
+      margin-bottom: 0.5rem;
+    }
+    
+    .book-card .card-text {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+    
+    .badge-book {
+      background-color: var(--primary-color);
+    }
+    
+    .badge-article {
+      background-color: #1cc88a;
+    }
+    
+    .search-box {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .search-box .form-control {
+      padding-left: 2.5rem;
+      border-radius: 50px;
+      border: 1px solid #d1d3e2;
+    }
+    
+    .search-box .bi-search {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b7b9cc;
+    }
+    
+    .add-book-form {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+    
+    footer {
+      background-color: white;
+      padding: 1.5rem 0;
+      margin-top: auto;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .action-btn {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .btn-delete {
+      background-color: #e74a3b;
+      border: none;
+    }
+    
+    .btn-delete:hover {
+      background-color: #be2617;
+    }
+    
+    .btn-edit {
+      background-color: #f6c23e;
+      border: none;
+    }
+    
+    .btn-edit:hover {
+      background-color: #dda20a;
+    }
+    
+    @media (max-width: 768px) {
+      .hero-section {
+        padding: 2rem 0;
+      }
+      
+      .add-book-form {
+        padding: 1.5rem;
+      }
+      
+      .action-btn {
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #6c757d;
+    }
+    
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #d1d3e2;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-book-half"></i> Lakshanya Book Store
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Books</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Articles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero-section">
+    <div class="container text-center">
+      <h1 class="display-5 fw-bold">Discover Your Next Favorite Read</h1>
+      <p class="lead">Browse our curated collection of books and articles</p>
+      
+      <form method="GET" action="/" class="mt-4 search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" name="search" value="{{ search }}" 
+               class="form-control form-control-lg" 
+               placeholder="Search by title, author or category...">
+      </form>
+    </div>
+  </div>
+
+  <div class="container my-4">
+    <div class="add-book-form">
+      <h3 class="h4 mb-4"><i class="bi bi-plus-circle"></i> Add New Item</h3>
+      <form method="POST" action="/add">
+        <div class="row g-3">
+          <div class="col-md-5">
+            <input type="text" name="title" class="form-control" placeholder="Title" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" name="author" class="form-control" placeholder="Author" required>
+          </div>
+          <div class="col-md-2">
+            <select name="category" class="form-select">
+              <option value="Book">Book</option>
+              <option value="Article">Article</option>
+            </select>
+          </div>
+          <div class="col-md-1">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-plus-lg"></i> Add
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="h4">Your Collection</h2>
+      <span class="badge bg-light text-dark">{{ books|length }} items</span>
+    </div>
+
+    {% if books|length == 0 %}
+      <div class="empty-state">
+        <i class="bi bi-book"></i>
+        <h3>No books found</h3>
+        <p>Start by adding some books to your collection</p>
+      </div>
+    {% else %}
+      <div class="row">
+        {% for book in books %}
+        <div class="col-lg-4 col-md-6">
+          <div class="book-card card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <span class="badge {% if book.category=='Book' %}badge-book{% else %}badge-article{% endif %}">
+                  {{ book.category }}
+                </span>
+              </div>
+              <p class="card-text"><i class="bi bi-person"></i> {{ book.author }}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+              <div class="action-btn">
+                <a href="/delete/{{ book.id }}" class="btn btn-sm btn-delete text-white">
+                  <i class="bi bi-trash"></i> Delete
+                </a>
+                <button class="btn btn-sm btn-edit text-white">
+                  <i class="bi bi-pencil"></i> Edit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 text-md-start text-center">
+          <p class="mb-0">© 2025 BookVista. All rights reserved.</p>
+        </div>
+        <div class="col-md-6 text-md-end text-center">
+          <p class="mb-0">Developed by Lakshanya S - Final year ECE</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
